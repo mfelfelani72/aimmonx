@@ -5,7 +5,7 @@ services:
   webserver:
     image: nginx:alpine
     container_name: aimoonx-webserver
-    # restart: always
+    restart: always
     tty: true
     ports:
       - "3000:24300"
