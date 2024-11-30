@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkbuiler=self.webpackChunkbuiler||[]).push([[741],{4741:(e,n,t)=>{t.r(n),t.d(n,{default:()=>r});var l=t(6540),a=(0,l.lazy)((function(){return Promise.all([t.e(976),t.e(150)]).then(t.bind(t,6121))}));const r=function(){return l.createElement("div",{className:"!font-yekanBakh"},l.createElement(a,null))}}}]);
