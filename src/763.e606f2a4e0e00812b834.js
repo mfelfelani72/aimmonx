@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkbuiler=self.webpackChunkbuiler||[]).push([[763],{7763:(e,n,u)=>{u.r(n),u.d(n,{default:()=>r});var a=u(6540);const r=function(){return a.createElement("div",null,"CardManagementLanding")}}}]);
