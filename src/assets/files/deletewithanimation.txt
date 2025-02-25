@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Box</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      #box {
+        width: 23rem;
+        height: 11rem;
+        background-color: #e5e7eb;
+        border-radius: 1.5rem;
+        border: 1px solid #3b82f6;
+        position: relative;
+        overflow: hidden;
+        padding: 1rem;
+      }
+
+      .piece {
+        position: absolute;
+        background-color: transparent;
+        transition: transform 5s, opacity 5s, border-radius 5s, margin 5s;
+      }
+
+      .explode .piece {
+        /* margin-top: 0;
+        margin-left: 0; */
+        animation: moveShrinkRoundFadeScatter 5s
+          cubic-bezier(0.68, 0.55, 0.27, 1.55) forwards;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @keyframes increaseMargin {
+        0% {
+          margin-top: 0;
+          margin-left: 0;
+        }
+        100% {
+          margin-top: 10px;
+          margin-left: 10px;
+        }
+      }
+
+      @keyframes moveShrinkRoundFadeScatter {
+        0% {
+          transform: translate(0, 0) scale(1);
+          border-radius: 25%;
+          opacity: 1;
+        }
+        100% {
+          transform: translate(
+              calc(400px * var(--random-x)),
+              calc(400px * var(--random-y))
+            )
+            scale(0);
+          border-radius: 50%;
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body class="flex items-center justify-center h-screen">
+    <div class="relative">
+      <div class="absolute top-0 right-0">
+        <div id="box" class="bg-gray-200">
+          <div
+            class="flex w-[23rem] h-[11rem] bg-gray-200 rounded-2xl border border-secondary/100"
+          >
+            <div class="flex flex-row w-full">
+              <div class="w-8">
+                <!-- <img
+                  src="/b3df9e28e6e4ddf8dd4575d112351949.svg"
+                  alt="shahr-bank"
+                  loading="lazy"
+                  class="w-8 h-8 rtl:mr-4 ltr:ml-4 mt-6"
+                /> -->
+              </div>
+              <div class="w-[calc(100%-86px)] rtl:mr-3 ltr:ml-3 py-6">
+                <h3
+                  class="text-Neutral/300 text-xs font-bold px-4"
+                  onclick="explodeBox()"
+                >
+                  بانک شهر
+                </h3>
+                <h3
+                  class="rtl:left-to-right text-Neutral/500 font-semibold text-lg xxs:text-2xl text-center mt-2 px-3 !font-spaceGrotesk"
+                >
+                  5047 0610 5372 2461
+                </h3>
+                <h3
+                  class="rtl:left-to-right text-Neutral/400 font-medium text-xs xxs:text-base text-center mt-1 items-center xxs:px-3 !font-spaceGrotesk"
+                >
+                  IR570820000000500827411436
+                </h3>
+                <h3
+                  class="text-Neutral/300 font-medium text-[0.625rem] mt-4 px-4"
+                >
+                  مهدیه احسان .08/17
+                </h3>
+              </div>
+              <div class="w-8">
+                <img
+                  src="data:image/svg+xml,%3csvg width='25' height='24' viewBox='0 0 25 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e %3cg id='Icons/Bold/More'%3e %3cpath id='Vector' d='M5.5 10C4.4 10 3.5 10.9 3.5 12C3.5 13.1 4.4 14 5.5 14C6.6 14 7.5 13.1 7.5 12C7.5 10.9 6.6 10 5.5 10Z' fill='%23E57C43'/%3e %3cpath id='Vector_2' d='M19.5 10C18.4 10 17.5 10.9 17.5 12C17.5 13.1 18.4 14 19.5 14C20.6 14 21.5 13.1 21.5 12C21.5 10.9 20.6 10 19.5 10Z' fill='%23E57C43'/%3e %3cpath id='Vector_3' d='M12.5 10C11.4 10 10.5 10.9 10.5 12C10.5 13.1 11.4 14 12.5 14C13.6 14 14.5 13.1 14.5 12C14.5 10.9 13.6 10 12.5 10Z' fill='%23E57C43'/%3e %3c/g%3e %3c/svg%3e"
+                  alt="list_item_more"
+                  loading="lazy"
+                  class="rtl:ml-10 ltr:mr-10 mt-6 w-6 h-6"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="absolute top-0 right-0">
+        <div id="piecesContainer" class=""></div>
+      </div>
+    </div>
+
+    <script>
+      function explodeBox() {
+        const box = document.getElementById("box");
+        const rect = box.getBoundingClientRect();
+        const piecesContainer = document.getElementById("piecesContainer");
+        piecesContainer.style.width = rect.width + "px";
+        piecesContainer.style.height = rect.height + "px";
+        const numPieces = 625;
+        const pieceWidth = rect.width / 25;
+        const pieceHeight = rect.height / 25;
+
+        html2canvas(box).then((canvas) => {
+          const dataURL = canvas.toDataURL();
+
+          for (let i = 0; i < numPieces; i++) {
+            const piece = document.createElement("div");
+            piece.className = "piece";
+            piece.dataset.index = i; // ذخیره شماره قطعه برای مرتب‌سازی بعدی
+
+            // تنظیم مقادیر تصادفی برای پراکندگی قطعات
+            piece.style.setProperty("--random-x", Math.random() - 0.5);
+            piece.style.setProperty("--random-y", Math.random() - 0.5);
+
+            const x = (i % 25) * pieceWidth;
+            const y = Math.floor(i / 25) * pieceHeight;
+
+            piece.style.width = `${pieceWidth}px`;
+            piece.style.height = `${pieceHeight}px`;
+            piece.style.left = `${x}px`;
+            piece.style.top = `${y}px`;
+            piece.style.backgroundPosition = `-${x}px -${y}px`;
+            piece.style.backgroundImage = `url(${dataURL})`;
+
+            piecesContainer.appendChild(piece);
+          }
+
+          const pieces = Array.from(document.querySelectorAll(".piece"));
+
+          document.getElementById("piecesContainer").classList.add("explode");
+
+          // مرتب‌سازی قطعات بر اساس مکان آنها از بالا راست به پایین چپ
+          pieces.sort((a, b) => {
+            const indexA = a.dataset.index;
+            const indexB = b.dataset.index;
+            const rowA = Math.floor(indexA / 10);
+            const colA = 9 - (indexA % 10);
+            const rowB = Math.floor(indexB / 10);
+            const colB = 9 - (indexB % 10);
+            if (colA === colB) {
+              return rowA - rowB;
+            }
+            return colA - colB;
+          });
+
+          document.getElementById("box").classList.add("hidden");
+        });
+      }
+    </script>
+  </body>
+</html>
