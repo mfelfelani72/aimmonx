@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkbuiler=self.webpackChunkbuiler||[]).push([[4315],{4315:(e,n,t)=>{t.r(n),t.d(n,{default:()=>l});var s=t(6540),u=t(5968);const l=function(){return(0,u.D)("get","Coin/ListCoins","","","fsdf").then((function(e){console.log(e)})),s.createElement("div",null,"TestCode")}}}]);
